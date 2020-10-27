@@ -8,7 +8,7 @@ from Mask.meta.config.coco_config import CocoConfig
 dir_path = os.path.dirname(os.path.realpath(__file__))
 MODEL_DIR = dir_path + "/models/"
 MODEL_PATH = './models/mask_rcnn_moles_0074.h5'#input("Insert the path of your trained model [ Like models/moles.../mask_rcnn_moles_0030.h5 ]: ")
-SAVE_PATH = './models/saved_model'
+SAVE_PATH = './saved_model/'
 if not os.path.isfile(MODEL_PATH):
     raise Exception(MODEL_PATH + " Does not exists")
 
