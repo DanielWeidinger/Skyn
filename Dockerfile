@@ -1,3 +1,3 @@
 FROM tensorflow/serving
-COPY ./models/skyn/v1 /models/skyn 
+COPY ./models/saved_model /models/skyn
 ENV MODEL_NAME skyn
