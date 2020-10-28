@@ -1,13 +1,16 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: skyn-deployment
+  name: skyn
 spec:
+  selector:
+    matchLabels:
+      app: skyn
   replicas: 1
   template:
     metadata:
       labels:
-        app: skyn-server
+        app: skyn
     spec:
       containers:
         - name: skyn-container
@@ -26,5 +29,5 @@ spec:
     - port: 9501
       targetPort: 8501
   selector:
-    app: skyn-server
+    app: skyn
   type: LoadBalancer
