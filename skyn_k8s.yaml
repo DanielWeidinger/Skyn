@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skyn
+spec:
+  selector:
+    matchLabels:
+      app: skyn
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: skyn
+    spec:
+      containers:
+        - name: skyn-container
+          image: weidinger/dobert_skyn:latest
+          ports:
+            - containerPort: 8501
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: skyn-service
+  name: skyn-service
+spec:
+  ports:
+    - port: 9501
+      targetPort: 8501
+  selector:
+    app: skyn
+  type: LoadBalancer
