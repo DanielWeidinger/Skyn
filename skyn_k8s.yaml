@@ -26,8 +26,7 @@ metadata:
   name: skyn-service
 spec:
   ports:
-    - port: 9501
-      targetPort: 8501
+    - port: 8501
   selector:
     app: skyn
   type: LoadBalancer

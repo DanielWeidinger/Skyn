@@ -5,7 +5,7 @@ from Mask.meta.mole_dataset import MoleDataset
 from Mask.meta.read_files import read_all_files_async, read_all_files
 
 
-def serialize_dataset(file_path, config, ASYNC_READ=True):
+def serialize_dataset(file_path, data_path, config, ASYNC_READ=True):
     all_info = []
 
     # path of Data that contain Descriptions and Images
@@ -13,11 +13,9 @@ def serialize_dataset(file_path, config, ASYNC_READ=True):
     if not os.path.exists(path_data):
         raise Exception(path_data + " Does not exists")
 
-    warning = True
-
     # Load all the images, mask and description of the Dataset
     print('start loading images...')
-    all_info = read_all_files_async(path_data) if ASYNC_READ else read_all_files(path_data)
+    all_info = read_all_files_async(data_path) if ASYNC_READ else read_all_files(path_data)
 
     # split the meta into train and test
     percentual = (len(all_info) * 30) // 100

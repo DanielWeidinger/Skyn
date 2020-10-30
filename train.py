@@ -9,19 +9,20 @@ from Mask.meta.serialize_data import serialize_dataset,deserialize_dataset
 def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     MODEL_DIR = dir_path + "/models/"
-    COCO_MODEL_PATH = dir_path + "/Mask/mask_rcnn_coco.h5"
-    DATA_PATH = COCO_MODEL_PATH #dir_path + "/Data/data_set.obj"
+    COCO_MODEL_PATH = os.path.normpath(dir_path + "/Mask/mask_rcnn_coco.h5")
+    DATA_PATH = "E:\\Data\\" #dir_path + "/Data/data_set.obj"
+    DATASET_FILE = "./Data/dataset.obj"
     MODEL_PATH = "/models/mask_rcnn_moles_0074.h5"
-    ITERATION = 74
+    ITERATION = 0
     SHOW_SAMPLES = False
 
     config = MolesConfig()
 
-    if not os.path.exists(DATA_PATH):
+    if not os.path.exists(DATASET_FILE):
         print('No preprocessed version found')
-        dataset_train, dataset_val = serialize_dataset(DATA_PATH, config)
+        dataset_train, dataset_val = serialize_dataset(DATASET_FILE, DATA_PATH, config)
     else:
-        dataset_train, dataset_val = deserialize_dataset(DATA_PATH)
+        dataset_train, dataset_val = deserialize_dataset(DATASET_FILE)
 
     # Show some random images to verify that everything is ok
     if SHOW_SAMPLES:
@@ -38,7 +39,7 @@ def main():
 
     # Use as start point the coco model
     print('loading weights...')
-    model.load_weights(MODEL_PATH, by_name=True,
+    model.load_weights(COCO_MODEL_PATH, by_name=True,
                     exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",
                                 "mrcnn_bbox", "mrcnn_mask"])
 

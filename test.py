@@ -22,8 +22,10 @@ config = CocoConfig()
 model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
 model.load_weights(MODEL_PATH, by_name=True)
 
+
+
 # path of Data that contain Descriptions and Images
-path_data = './test_data/ISIC_0000002.jpeg'#input("Insert the path of Data [ Link /home/../ISIC-Archive-Downloader/Data/ ] : ")
+path_data = './test_data/3.jpg'#input("Insert the path of Data [ Link /home/../ISIC-Archive-Downloader/Data/ ] : ")
 if not os.path.exists(path_data):
     raise Exception(path_data + " does not exists")
 
@@ -33,14 +35,10 @@ class_names = ["BG", "malignant", "benign"]
 #meta = json.load(open(path_data+"Descriptions/"+filename))
 img = cv2.imread(path_data)
 img = cv2.resize(img, (128, 128))
-
 if img is None:
     exit(1)
 
-# ground truth of the class
-#print(meta["meta"]["clinical"]["benign_malignant"])
-
 # predict the mask, bounding box and class of the image
 r = model.detect([img])[0]
-visualize.display_instances(img, r['rois'], r['masks'], r['class_ids'],
-                            class_names, r['scores'])
+print(r['scores'])
+visualize.display_instances(img, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'])
