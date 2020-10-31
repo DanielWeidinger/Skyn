@@ -1262,7 +1262,7 @@ def load_image_gt(dataset, config, image_id, augment=False, augmentation=None,
     # and here is to filter them out
     _idx = np.sum(mask, axis=(0, 1)) > 0
     mask = mask[:, :, _idx]
-    class_ids = class_ids[_idx]
+    #class_ids = class_ids[_idx]
     # Bounding boxes. Note that some boxes might be all zeros
     # if the corresponding mask got cropped out.
     # bbox: [num_instances, (y1, x1, y2, x2)]
@@ -2361,13 +2361,15 @@ class MaskRCNN():
         else:
             workers = multiprocessing.cpu_count()
 
+        train_generator.__next__()
+        val_generator.__next__()
         self.keras_model.fit_generator(
             train_generator,
             initial_epoch=self.epoch,
             epochs=epochs,
             steps_per_epoch=self.config.STEPS_PER_EPOCH,
             callbacks=callbacks,
-            validation_data=val_generator,
+            #validation_data=val_generator,
             validation_steps=self.config.VALIDATION_STEPS,
             max_queue_size=100,
             workers=workers,

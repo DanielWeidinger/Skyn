@@ -1,4 +1,5 @@
 from Mask.meta.dataset import Dataset
+import numpy as np
 
 class MoleDataset(Dataset):
     ''' 
