@@ -12,8 +12,8 @@ def main():
     COCO_MODEL_PATH = os.path.normpath(dir_path + "/Mask/mask_rcnn_coco.h5")
     DATA_PATH = "E:\\Data\\" #dir_path + "/Data/data_set.obj"
     DATASET_FILE = "./Data/dataset.obj"
-    MODEL_PATH = "/models/mask_rcnn_moles_0074.h5"
-    ITERATION = 0
+    MODEL_PATH = "./models/mask_rcnn_moles.h5"
+    ITERATION = 24
     SHOW_SAMPLES = False
 
     config = MolesConfig()
@@ -39,22 +39,26 @@ def main():
 
     # Use as start point the coco model
     print('loading weights...')
-    model.load_weights(COCO_MODEL_PATH, by_name=True,
+    model.load_weights(MODEL_PATH, by_name=True,
                     exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",
                                 "mrcnn_bbox", "mrcnn_mask"])
 
     # Train the model on the train dataset
     # First only the header layers
     if ITERATION < 30:
+        print("training the heads")
         model.train(dataset_train, dataset_val,
+                    initial_epoch=ITERATION,
                     learning_rate=config.LEARNING_RATE,
-                    epochs=30-ITERATION,
+                    epochs=30,
                     layers='heads')
     # After all the layers 
     if ITERATION < 90:
+        print("training the layers")
         model.train(dataset_train, dataset_val,
+                    initial_epoch=ITERATION-30 if ITERATION > 30 else 0,
                     learning_rate=config.LEARNING_RATE/10,
-                    epochs=90-ITERATION,
+                    epochs=90-(30-ITERATION if ITERATION > 30 else 0),
                     layers="all")
 
     print("Trained finished!")
