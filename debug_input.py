@@ -56,10 +56,9 @@ anchors = model.get_anchors(image_shape)
 anchors = np.broadcast_to(anchors, (config.BATCH_SIZE,) + anchors.shape)
 
 # Run object detection
-model_x = [molded_images, image_metas, anchors]
 with open('./Data/test_input.txt', "w+") as f:
-    f.write(str(model_x))
-detections, _, _, mrcnn_mask, _, _, _ = model.keras_model.predict(model_x, verbose=0)
+    f.write(str(np.array(images[0]).tolist()))
+detections, _, _, mrcnn_mask, _, _, _ = model.keras_model.predict([molded_images, image_metas, anchors], verbose=0)
 
 
 # Process detections

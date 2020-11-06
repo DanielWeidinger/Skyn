@@ -2595,7 +2595,8 @@ class MaskRCNN():
             })
         return results
 
-    def get_anchors(self, image_shape):
+    def \
+            get_anchors(self, image_shape):
         """Returns anchor pyramid for the given image size."""
         backbone_shapes = compute_backbone_shapes(self.config, image_shape)
         # Cache anchors and reuse if image shape is the same
