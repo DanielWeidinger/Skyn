@@ -60,11 +60,33 @@ data = json.dumps({
     'signature_name': "predict",
     'instances': [
             {
-                'input_image:0': molded_images.tolist(),
-                'input_image_meta:0': image_metas.tolist(),
-                'input_anchors:0': anchors.tolist()
+                'input_image:0': molded_images.tolist()[0],
+                'input_image_meta:0': image_metas.tolist()[0],
+                'input_anchors:0': anchors.tolist()[0]
             }
         ]
     })
 res = requests.post('http://86.56.135.139:31967/v1/models/skyn:predict', data=data, headers=headers)
-print(res)
+decoded = json.loads(res.content.decode("utf-8"))['predictions'][0]
+
+detections = np.array([decoded['mrcnn_detection/Reshape_1:0']])
+mrcnn_mask = np.array([decoded['mrcnn_mask/Reshape_1:0']])
+
+# Process detections
+results = []
+for i, image in enumerate(images):
+    final_rois, final_class_ids, final_scores, final_masks =\
+        model.unmold_detections(detections[i], mrcnn_mask[i],
+                               image.shape, molded_images[i].shape,
+                               windows[i])
+    results.append({
+        "rois": final_rois,
+        "class_ids": final_class_ids,
+        "scores": final_scores,
+        "masks": final_masks,
+    })
+
+r = results[0]
+print(r['scores'])
+visualize.display_instances(img, r['rois'], r['masks'], r['class_ids'], class_names, r['scores'])
+
