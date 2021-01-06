@@ -9,11 +9,11 @@ from Mask.meta.serialize_data import serialize_dataset,deserialize_dataset
 def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     MODEL_DIR = dir_path + "/models/"
-    COCO_MODEL_PATH = os.path.normpath(dir_path + "/Mask/mask_rcnn_coco.h5")
+    COCO_MODEL_PATH = "/Data/mask_rcnn_coco.h5" #os.path.normpath(dir_path + "/Data/mask_rcnn_coco.h5")
     DATA_PATH = "E:\\Data\\" #dir_path + "/Data/data_set.obj"
-    DATASET_FILE = "./Data/dataset.obj"
+    DATASET_FILE = "/Data/Data/dataset.obj"
     MODEL_PATH = "./models/mask_rcnn_moles.h5"
-    ITERATION = 24
+    ITERATION = 0
     SHOW_SAMPLES = False
 
     config = MolesConfig()
@@ -37,9 +37,9 @@ def main():
     print('creating model...')
     model = modellib.MaskRCNN(mode="training", config=config, model_dir=MODEL_DIR)
 
-    # Use as start point the coco model
+    # Use the coco model as start point
     print('loading weights...')
-    model.load_weights(MODEL_PATH, by_name=True,
+    model.load_weights(COCO_MODEL_PATH, by_name=True,
                     exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",
                                 "mrcnn_bbox", "mrcnn_mask"])
 
